@@ -34,6 +34,46 @@ export default class API {
         return { 'error' : 'Error: failed to load profile data' }
     }
 
+    async getLab(lab_id){
+        if (!this.token) return {'error': 'Error: missing token '}
+        const result = await this.get(this.token, '/2/labs/'+lab_id)       
+        if (result.data){
+            const record = result.data
+            return record
+        } 
+        return { 'error' : 'Error: failed to load lab data' }
+    }
+
+    async labs(page=1, per_page=10){
+        if (!this.token) return {'error': 'Error: missing token '}
+        const result = await this.get(this.token, '/2/labs?page=' + page + '&per_page=' + per_page)       
+        if (result.data){
+            const record = result.data
+            return record
+        } 
+        return { 'error' : 'Error: failed to list labs' }
+    }
+
+    async nearbyLabs(lat,lng,page=1, per_page=10){
+        if (!this.token) return {'error': 'Error: missing token '}
+        const result = await this.get(this.token, '/2/labs/search?q='+lat+':'+lng+'&type=location&page=' + page + '&per_page=' + per_page)       
+        if (result.data){
+            const record = result.data
+            return record
+        } 
+        return { 'error' : 'Error: failed to find nearby labs' }
+    }
+
+    async searchLabs(page=1, per_page=10){
+        if (!this.token) return {'error': 'Error: missing token '}
+        const result = await this.get(this.token, '/2/labs/search?q='+query+'&type=fulltext&page=' + page + '&per_page=' + per_page)       
+        if (result.data){
+            const record = result.data
+            return record
+        } 
+        return { 'error' : 'Error: failed to search labs' }
+    }
+
 
 
 }
