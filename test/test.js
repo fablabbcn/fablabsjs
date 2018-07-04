@@ -82,6 +82,8 @@ describe('fablabs.js', () => {
     })
   })
 
+  it('should be able to find labs by name')
+
   it('should be able to list projects')
 
   it('should be able to access a project detail')

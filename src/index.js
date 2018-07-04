@@ -1,5 +1,5 @@
 import Auth from "./auth"
-import API from "./api"
+import Api from "./api"
 
 const _default_config = {
   client_id: 'c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546' || process.env['FABLABS_IO_API_KEY'],
@@ -11,19 +11,32 @@ const _default_config = {
   token_url: '/oauth/token'
 }
 
+/**
+ * Main entry point for the Fablabs.io API
+ * @example
+ * let config = {}
+ * let fablabs = new FablabsAPI(config);
+ */
 export default class FablabsAPI {
-  
   
   constructor(config={}){
     this.config = { ...config, ..._default_config }
     this.auth = new Auth(this.config)
     this.token = this.config.personal_token
   }
-
+  /**
+   * Get the authorization url for fablabs.io authorization code
+   * @returns string the authorization url
+   */
   authorization_url(){
     return this.auth.authorize_url()
   }
-
+  /**
+   * Handle  the authorization code obtained from the Authorization endpoint
+   * and request an Access token.
+   * @param {String} code 
+   * @returns {Object}
+   */
   async handleAuthCode(code){
      const token = this.auth.request_token(code)
      if (token){
@@ -31,9 +44,12 @@ export default class FablabsAPI {
      }
      return this.token
   }
-
+  /**
+   * Get an instance of the API initialized with the current config and token
+   * @returns {Api}
+   */
   api(){
-    return new API(this.config, this.token)
+    return new Api(this.config, this.token)
   }
 
 }

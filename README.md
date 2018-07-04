@@ -2,6 +2,7 @@
 
 An ES6 Fablabs.io API client
 
+<img src="docs/badge.svg">
 
 ## Installation
 

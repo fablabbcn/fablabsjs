@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/api.js",
-    "content": "import querystring from 'querystring'\nimport axios from 'axios'\n\nexport default class Api {\n\n    constructor(config, token){\n        this.config = config\n        this.token = token\n    }\n\n    async get(token, url,params,options){\n        const base_url = this.config.base_url\n    \n        const res = await axios.request({\n                    method: 'get', \n                    url: base_url + url, params,\n                    headers: {\n                        'Authorization': 'Bearer ' + this.token\n                    },\n                    ...options\n                }, params)\n        return res\n    }\n    \n\n    async getUser(){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/users/me.json')       \n        if (result.data){\n            const record = result.data\n            const item = record.data\n            return item.attributes\n        } \n        return { 'error' : 'Error: failed to load profile data' }\n    }\n\n    async getLab(lab_id){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/'+lab_id)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to load lab data' }\n    }\n\n    async labs(page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs?page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to list labs' }\n    }\n\n    async nearbyLabs(lat,lng,page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+lat+':'+lng+'&type=location&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to find nearby labs' }\n    }\n\n    async searchLabs(page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+query+'&type=fulltext&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to search labs' }\n    }\n\n\n\n}",
+    "content": "import querystring from 'querystring'\nimport axios from 'axios'\n\n/**\n * This class encapsulates the methods exposed by the FabLabs.io API\n * You can use this standalone providing a valid access_token and\n * the same config used by the {@link FablabsAPI} class.\n * @example\n * let config = {...}\n * let access_token = '<something>'\n * let api = new Api(config, access_token)\n */\nexport default class Api {\n\n    constructor(config, token){\n        this.config = config\n        this.token = token\n    }\n\n    /**\n     * Perform a GET request on the API endpoint, passing the access token\n     * @param {string} token \n     * @param {string} url \n     * @param {*} params \n     * @param {*} options \n     * @returns {object} the GET request result\n     */\n    async get(token, url,params,options){\n        const base_url = this.config.base_url\n    \n        const res = await axios.request({\n                    method: 'get', \n                    url: base_url + url, params,\n                    headers: {\n                        'Authorization': 'Bearer ' + this.token\n                    },\n                    ...options\n                }, params)\n        return res\n    }\n    \n    /**\n     * Get the profile for the user associated to the current access_token\n     * @returns {Object}\n     */\n    async getUser(){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/users/me.json')       \n        if (result.data){\n            const record = result.data\n            const item = record.data\n            return item.attributes\n        } \n        return { 'error' : 'Error: failed to load profile data' }\n    }\n\n    /**\n     * Get the details for a given lab identified by id\n     * @param {Number} lab_id \n     * @returns {Object}\n     */\n    async getLab(lab_id){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/'+lab_id)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to load lab data' }\n    }\n    /**\n     * List approved labs\n     * @param {Number} page the desired result page, default 1\n     * @param {Number} per_page the desired number of results per page, default 10\n     @ @returns {Object}\n     */\n    async labs(page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs?page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to list labs' }\n    }\n\n    /**\n     * Search approved labs by location\n     * @param {Number} lat latitute \n     * @param {Number} lng longitude\n     * @param {Number} page the desired result page, default 1\n     * @param {Number} per_page the desired number of results per page, default 10\n     @ @returns {Object}\n     */\n    async nearbyLabs(lat,lng,page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+lat+':'+lng+'&type=location&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to find nearby labs' }\n    }\n\n    /**\n     * Search approved labs by name\n     * @param {String} query the search query\n     * @param {Number} page the desired result page, default 1\n     * @param {Number} per_page the desired number of results per page, default 10\n     @ @returns {Object}\n     */\n    async searchLabs(query, page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+query+'&type=fulltext&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to search labs' }\n    }\n\n\n\n}",
     "static": true,
     "longname": "/Users/fiore/WIP/fablabsjs/src/api.js",
     "access": "public",
@@ -585,9 +585,11 @@
     "export": true,
     "importPath": "fablabsjs/src/api.js",
     "importStyle": "Api",
-    "description": null,
-    "lineNumber": 4,
-    "undocument": true,
+    "description": "This class encapsulates the methods exposed by the FabLabs.io API\nYou can use this standalone providing a valid access_token and\nthe same config used by the {@link FablabsAPI} class.",
+    "examples": [
+      "let config = {...}\nlet access_token = '<something>'\nlet api = new Api(config, access_token)"
+    ],
+    "lineNumber": 13,
     "interface": false
   },
   {
@@ -601,7 +603,7 @@
     "longname": "src/api.js~Api#constructor",
     "access": "public",
     "description": null,
-    "lineNumber": 6,
+    "lineNumber": 15,
     "undocument": true
   },
   {
@@ -613,7 +615,7 @@
     "longname": "src/api.js~Api#config",
     "access": "public",
     "description": null,
-    "lineNumber": 7,
+    "lineNumber": 16,
     "undocument": true,
     "type": {
       "types": [
@@ -630,7 +632,7 @@
     "longname": "src/api.js~Api#token",
     "access": "public",
     "description": null,
-    "lineNumber": 8,
+    "lineNumber": 17,
     "undocument": true,
     "type": {
       "types": [
@@ -648,39 +650,63 @@
     "static": false,
     "longname": "src/api.js~Api#get",
     "access": "public",
-    "description": null,
-    "lineNumber": 11,
-    "undocument": true,
+    "description": "Perform a GET request on the API endpoint, passing the access token",
+    "lineNumber": 28,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{object} the GET request result"
+      }
+    ],
     "params": [
       {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "token",
-        "types": [
-          "*"
-        ]
+        "description": ""
       },
       {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "url",
-        "types": [
-          "*"
-        ]
+        "description": ""
       },
       {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "params",
-        "types": [
-          "*"
-        ]
+        "description": ""
       },
       {
-        "name": "options",
+        "nullable": null,
         "types": [
           "*"
-        ]
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": ""
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "object"
+      ],
+      "spread": false,
+      "description": "the GET request result"
     }
   },
   {
@@ -693,15 +719,23 @@
     "static": false,
     "longname": "src/api.js~Api#getUser",
     "access": "public",
-    "description": null,
-    "lineNumber": 26,
-    "undocument": true,
-    "params": [],
+    "description": "Get the profile for the user associated to the current access_token",
+    "lineNumber": 46,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object}"
+      }
+    ],
     "return": {
+      "nullable": null,
       "types": [
-        "{\"error\": string}"
-      ]
-    }
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "__docId__": 55,
@@ -713,21 +747,33 @@
     "static": false,
     "longname": "src/api.js~Api#getLab",
     "access": "public",
-    "description": null,
-    "lineNumber": 37,
-    "undocument": true,
+    "description": "Get the details for a given lab identified by id",
+    "lineNumber": 62,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object}"
+      }
+    ],
     "params": [
       {
-        "name": "lab_id",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "lab_id",
+        "description": ""
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "{\"error\": string}"
-      ]
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
     }
   },
   {
@@ -740,27 +786,28 @@
     "static": false,
     "longname": "src/api.js~Api#labs",
     "access": "public",
-    "description": null,
-    "lineNumber": 47,
-    "undocument": true,
+    "description": "List approved labs",
+    "lineNumber": 77,
     "params": [
       {
-        "name": "page",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "number"
+          "Number"
         ],
-        "defaultRaw": 1,
-        "defaultValue": "1"
+        "spread": false,
+        "optional": false,
+        "name": "page",
+        "description": "the desired result page, default 1"
       },
       {
-        "name": "per_page",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "number"
+          "Number"
         ],
-        "defaultRaw": 10,
-        "defaultValue": "10"
+        "spread": false,
+        "optional": false,
+        "name": "per_page",
+        "description": "the desired number of results per page, default 10\n@ @returns {Object}"
       }
     ],
     "return": {
@@ -779,39 +826,48 @@
     "static": false,
     "longname": "src/api.js~Api#nearbyLabs",
     "access": "public",
-    "description": null,
-    "lineNumber": 57,
-    "undocument": true,
+    "description": "Search approved labs by location",
+    "lineNumber": 95,
     "params": [
       {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "lat",
-        "types": [
-          "*"
-        ]
+        "description": "latitute"
       },
       {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "lng",
-        "types": [
-          "*"
-        ]
+        "description": "longitude"
       },
       {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
         "name": "page",
-        "optional": true,
-        "types": [
-          "number"
-        ],
-        "defaultRaw": 1,
-        "defaultValue": "1"
+        "description": "the desired result page, default 1"
       },
       {
-        "name": "per_page",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "number"
+          "Number"
         ],
-        "defaultRaw": 10,
-        "defaultValue": "10"
+        "spread": false,
+        "optional": false,
+        "name": "per_page",
+        "description": "the desired number of results per page, default 10\n@ @returns {Object}"
       }
     ],
     "return": {
@@ -830,27 +886,38 @@
     "static": false,
     "longname": "src/api.js~Api#searchLabs",
     "access": "public",
-    "description": null,
-    "lineNumber": 67,
-    "undocument": true,
+    "description": "Search approved labs by name",
+    "lineNumber": 112,
     "params": [
       {
-        "name": "page",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "number"
+          "String"
         ],
-        "defaultRaw": 1,
-        "defaultValue": "1"
+        "spread": false,
+        "optional": false,
+        "name": "query",
+        "description": "the search query"
       },
       {
-        "name": "per_page",
-        "optional": true,
+        "nullable": null,
         "types": [
-          "number"
+          "Number"
         ],
-        "defaultRaw": 10,
-        "defaultValue": "10"
+        "spread": false,
+        "optional": false,
+        "name": "page",
+        "description": "the desired result page, default 1"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "per_page",
+        "description": "the desired number of results per page, default 10\n@ @returns {Object}"
       }
     ],
     "return": {
@@ -995,7 +1062,7 @@
     "__docId__": 66,
     "kind": "file",
     "name": "src/index.js",
-    "content": "import Auth from \"./auth\"\nimport Api from \"./api\"\n\nconst _default_config = {\n  client_id: 'c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546' || process.env['FABLABS_IO_API_KEY'],\n  client_secret: 'b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d'|| process.env['FABLABS_IO_API_SECRET'],\n  personal_token: 'a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac' || process.env['FABLABS_IO_PERSONAL_TOKEN'],\n  redirect_url: 'http://localhost:3001/auth/callback' || process.env['FABLABS_IO_REDIRECT_URL'],\n  base_url: 'http://api.fablabs.local:3000' || process.env['FABLABS_IO_API_HOST'],\n  authorize_url: '/oauth/authorize',\n  token_url: '/oauth/token'\n}\n\nexport default class FablabsAPI {\n  \n  \n  constructor(config={}){\n    this.config = { ...config, ..._default_config }\n    this.auth = new Auth(this.config)\n    this.token = this.config.personal_token\n  }\n\n  authorization_url(){\n    return this.auth.authorize_url()\n  }\n\n  async handleAuthCode(code){\n     const token = this.auth.request_token(code)\n     if (token){\n       this.token = token\n     }\n     return this.token\n  }\n\n  api(){\n    return new Api(this.config, this.token)\n  }\n\n}\n",
+    "content": "import Auth from \"./auth\"\nimport Api from \"./api\"\n\nconst _default_config = {\n  client_id: 'c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546' || process.env['FABLABS_IO_API_KEY'],\n  client_secret: 'b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d'|| process.env['FABLABS_IO_API_SECRET'],\n  personal_token: 'a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac' || process.env['FABLABS_IO_PERSONAL_TOKEN'],\n  redirect_url: 'http://localhost:3001/auth/callback' || process.env['FABLABS_IO_REDIRECT_URL'],\n  base_url: 'http://api.fablabs.local:3000' || process.env['FABLABS_IO_API_HOST'],\n  authorize_url: '/oauth/authorize',\n  token_url: '/oauth/token'\n}\n\n/**\n * Main entry point for the Fablabs.io API\n * @example\n * let config = {}\n * let fablabs = new FablabsAPI(config);\n */\nexport default class FablabsAPI {\n  \n  constructor(config={}){\n    this.config = { ...config, ..._default_config }\n    this.auth = new Auth(this.config)\n    this.token = this.config.personal_token\n  }\n  /**\n   * Get the authorization url for fablabs.io authorization code\n   * @returns string the authorization url\n   */\n  authorization_url(){\n    return this.auth.authorize_url()\n  }\n  /**\n   * Handle  the authorization code obtained from the Authorization endpoint\n   * and request an Access token.\n   * @param {String} code \n   * @returns {Object}\n   */\n  async handleAuthCode(code){\n     const token = this.auth.request_token(code)\n     if (token){\n       this.token = token\n     }\n     return this.token\n  }\n  /**\n   * Get an instance of the API initialized with the current config and token\n   * @returns {Api}\n   */\n  api(){\n    return new Api(this.config, this.token)\n  }\n\n}\n",
     "static": true,
     "longname": "/Users/fiore/WIP/fablabsjs/src/index.js",
     "access": "public",
@@ -1035,7 +1102,7 @@
     "importPath": "fablabsjs/src/index.js",
     "importStyle": "FablabsAPI",
     "description": null,
-    "lineNumber": 14,
+    "lineNumber": 20,
     "undocument": true,
     "interface": false
   },
@@ -1050,7 +1117,7 @@
     "longname": "src/index.js~FablabsAPI#constructor",
     "access": "public",
     "description": null,
-    "lineNumber": 17,
+    "lineNumber": 22,
     "undocument": true
   },
   {
@@ -1062,7 +1129,7 @@
     "longname": "src/index.js~FablabsAPI#config",
     "access": "public",
     "description": null,
-    "lineNumber": 18,
+    "lineNumber": 23,
     "undocument": true,
     "type": {
       "types": [
@@ -1079,7 +1146,7 @@
     "longname": "src/index.js~FablabsAPI#auth",
     "access": "public",
     "description": null,
-    "lineNumber": 19,
+    "lineNumber": 24,
     "undocument": true,
     "type": {
       "types": [
@@ -1096,7 +1163,7 @@
     "longname": "src/index.js~FablabsAPI#token",
     "access": "public",
     "description": null,
-    "lineNumber": 20,
+    "lineNumber": 25,
     "undocument": true,
     "type": {
       "types": [
@@ -1114,15 +1181,23 @@
     "static": false,
     "longname": "src/index.js~FablabsAPI#authorization_url",
     "access": "public",
-    "description": null,
-    "lineNumber": 23,
-    "undocument": true,
-    "params": [],
+    "description": "Get the authorization url for fablabs.io authorization code",
+    "lineNumber": 31,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "string the authorization url"
+      }
+    ],
     "return": {
+      "nullable": null,
       "types": [
         "*"
-      ]
-    }
+      ],
+      "spread": false,
+      "description": "string the authorization url"
+    },
+    "params": []
   },
   {
     "__docId__": 74,
@@ -1134,21 +1209,33 @@
     "static": false,
     "longname": "src/index.js~FablabsAPI#handleAuthCode",
     "access": "public",
-    "description": null,
-    "lineNumber": 27,
-    "undocument": true,
+    "description": "Handle  the authorization code obtained from the Authorization endpoint\nand request an Access token.",
+    "lineNumber": 40,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object}"
+      }
+    ],
     "params": [
       {
-        "name": "code",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "code",
+        "description": ""
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
     }
   },
   {
@@ -1161,15 +1248,23 @@
     "static": false,
     "longname": "src/index.js~FablabsAPI#api",
     "access": "public",
-    "description": null,
-    "lineNumber": 35,
-    "undocument": true,
-    "params": [],
+    "description": "Get an instance of the API initialized with the current config and token",
+    "lineNumber": 51,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Api}"
+      }
+    ],
     "return": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
-    }
+        "Api"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
   },
   {
     "kind": "index",
