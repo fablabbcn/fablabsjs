@@ -2,7 +2,9 @@
 
 An ES6 Fablabs.io API client
 
-<img src="docs/badge.svg">
+<a href="https://fablabbcn.github.io/fablabsjs/"><img src="docs/badge.svg"></a> 
+
+<img src="https://img.shields.io/npm/l/express.svg"/>
 
 ## Installation
 
