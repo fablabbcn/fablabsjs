@@ -84,6 +84,8 @@ const token = await fablabs.handle_token(code)
 const userProfile = await fablabs.api().getUser()
 ```
 
+See the API reference for available functions.
+
 
 ## Configuration variables
 

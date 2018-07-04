@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | fablabsjs</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Fablabs.io API Interface"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="fablabsjs"><meta property="twitter:description" content="Fablabs.io API Interface"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/auth.js~Auth.html">Auth</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="fablabs-js">fablabs.js</h1><p>An ES6 Fablabs.io API client</p>
+<h2 id="installation">Installation</h2><pre><code><code class="source-code prettyprint">yarn add fablabsjs</code>
+</code></pre><h2 id="usage-examples">Usage Examples</h2><h3 id="using-a-personal-token">Using a personal token</h3><p>If you want to write a personal app, or just want avoid using the OAuth flow for testing, you need
+to get a <strong>personal token</strong> from the Fablabs.io Developer console, along with application id and secret.</p>
+<blockquote>
+<p>WARNING: Please make sure you understand that the token must be kept safe since all operations are done with your
+account and other users can impersonate you if it leaks.</p>
+</blockquote>
+<p>See <a href="http://docs.fablabs.io">docs.fablabs.io</a> for further information</p>
+<pre><code><code class="source-code prettyprint">import  FablabsAPI from &apos;fablabsjs&apos;
+
+const config = {
+
+    client_id: &apos;&lt;your application id&gt;&apos;,
+    client_secret: &apos;&lt;your secret&gt;&apos;,
+    personal_token: &apos;&lt;your personal token from the dashboard&gt;&apos;  // only for thev
+}
+
+
+let fablabs = new FablabsAPI(config)
+
+
+// get the oauth redirect url
+
+const redirect_url = fablabs.authorization_url()
+
+
+// process the authorization code and turn it into a token
+
+const token = await fablabs.handle_token(code)
+
+
+// call any of the api methods
+
+const userProfile = await fablabs.api().getUser()</code>
+</code></pre><h3 id="using-the-oauth-flow">Using the oAuth flow</h3><p>The library helps you in implementing the OAuth flow easily into your application. This is the preferred way to authenticate 
+your app, allowing each user to login on fablabs.io and authorize your app.</p>
+<pre><code><code class="source-code prettyprint">import  FablabsAPI from &apos;fablabsjs&apos;
+
+const config = {
+
+    client_id: &apos;&lt;your application id&gt;&apos;,
+    client_secret: &apos;&lt;your secret&gt;&apos;,
+    redirect_url:&apos;http://localhost:3001/auth/callback&apos;
+}
+
+let fablabs = new FablabsAPI(config)
+
+// get the oauth redirect url
+
+const redirect_url = fablabs.authorization_url()
+
+// send the user to this url, and wait for the code to be sent to redirect_url
+
+// there, process the authorization code and turn it into a token
+
+const token = await fablabs.handle_token(code)
+
+// call any of the api methods on behalf of the user
+
+const userProfile = await fablabs.api().getUser()</code>
+</code></pre><p>See the API reference for available functions.</p>
+<h2 id="configuration-variables">Configuration variables</h2><p>The following are all the variables you can set in the fablabsjs config:</p>
+<pre><code><code class="source-code prettyprint">const _default_config = {
+    client_id: &apos;c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546&apos; || process.env[&apos;FABLABS_IO_API_KEY&apos;],
+    client_secret: &apos;b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d&apos;|| process.env[&apos;FABLABS_IO_API_SECRET&apos;],
+    redirect_url:&apos;http://localhost:3001/auth/callback&apos; || process.env[&apos;FABLABS_IO_REDIRECT_URL&apos;]
+    base_url:&apos;http://api.fablabs.local:3000&apos; || process.env[&apos;FABLABS_IO_API_HOST&apos;],
+    authorize_url:&apos;/oauth/authorize&apos;,
+    token_url:&apos;/oauth/token&apos;,
+    personal_token: &apos;a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac&apos; || process.env[&apos;FABLABS_IO_PERSONAL_TOKEN&apos;]
+}</code>
+</code></pre><p>Please note that you can avoid to specify any config and just set environment variables instead.</p>
+<pre><code><code class="source-code prettyprint">FABLABS_IO_API_KEY = &apos;your client id&apos;
+FABLABS_IO_API_SECRET = &apos;your secret&apos;
+FABLABS_IO_REDIRECT_URL = &apos;http://localhost:3001/auth/callback&apos;
+FABLABS_IO_API_HOST = &apos;http://api.fablabs.io&apos;
+FABLABS_IO_PERSONAL_TOKEN = &apos;your personal token&apos;</code>
+</code></pre><h2 id="run-tests">Run tests</h2><p>You can test the API and your config using the following command</p>
+<p><code>yarn test</code></p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

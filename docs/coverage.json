@@ -1,0 +1,19 @@
+{
+  "coverage": "0%",
+  "expectCount": 6,
+  "actualCount": 0,
+  "files": {
+    "src/auth.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        8,
+        12,
+        25,
+        43
+      ]
+    }
+  }
+}

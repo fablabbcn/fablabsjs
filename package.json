@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "test": "npm run compile && ./node_modules/.bin/mocha --timeout 100000 --compilers js:babel-core/register",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "docs": "./node_modules/.bin/esdoc"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.9.1",
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "querystring": "^0.2.0"
   }
 }
