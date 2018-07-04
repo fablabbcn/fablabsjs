@@ -566,6 +566,302 @@
   {
     "__docId__": 48,
     "kind": "file",
+    "name": "src/api.js",
+    "content": "import querystring from 'querystring'\nimport axios from 'axios'\n\nexport default class Api {\n\n    constructor(config, token){\n        this.config = config\n        this.token = token\n    }\n\n    async get(token, url,params,options){\n        const base_url = this.config.base_url\n    \n        const res = await axios.request({\n                    method: 'get', \n                    url: base_url + url, params,\n                    headers: {\n                        'Authorization': 'Bearer ' + this.token\n                    },\n                    ...options\n                }, params)\n        return res\n    }\n    \n\n    async getUser(){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/users/me.json')       \n        if (result.data){\n            const record = result.data\n            const item = record.data\n            return item.attributes\n        } \n        return { 'error' : 'Error: failed to load profile data' }\n    }\n\n    async getLab(lab_id){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/'+lab_id)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to load lab data' }\n    }\n\n    async labs(page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs?page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to list labs' }\n    }\n\n    async nearbyLabs(lat,lng,page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+lat+':'+lng+'&type=location&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to find nearby labs' }\n    }\n\n    async searchLabs(page=1, per_page=10){\n        if (!this.token) return {'error': 'Error: missing token '}\n        const result = await this.get(this.token, '/2/labs/search?q='+query+'&type=fulltext&page=' + page + '&per_page=' + per_page)       \n        if (result.data){\n            const record = result.data\n            return record\n        } \n        return { 'error' : 'Error: failed to search labs' }\n    }\n\n\n\n}",
+    "static": true,
+    "longname": "/Users/fiore/WIP/fablabsjs/src/api.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "Api",
+    "memberof": "src/api.js",
+    "static": true,
+    "longname": "src/api.js~Api",
+    "access": "public",
+    "export": true,
+    "importPath": "fablabsjs/src/api.js",
+    "importStyle": "Api",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/api.js~Api#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "config",
+    "memberof": "src/api.js~Api",
+    "static": false,
+    "longname": "src/api.js~Api#config",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "token",
+    "memberof": "src/api.js~Api",
+    "static": false,
+    "longname": "src/api.js~Api#token",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#get",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "params": [
+      {
+        "name": "token",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "params",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "method",
+    "name": "getUser",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#getUser",
+    "access": "public",
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "{\"error\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "method",
+    "name": "getLab",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#getLab",
+    "access": "public",
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "params": [
+      {
+        "name": "lab_id",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"error\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "method",
+    "name": "labs",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#labs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 47,
+    "undocument": true,
+    "params": [
+      {
+        "name": "page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 1,
+        "defaultValue": "1"
+      },
+      {
+        "name": "per_page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 10,
+        "defaultValue": "10"
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"error\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "method",
+    "name": "nearbyLabs",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#nearbyLabs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 57,
+    "undocument": true,
+    "params": [
+      {
+        "name": "lat",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "lng",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 1,
+        "defaultValue": "1"
+      },
+      {
+        "name": "per_page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 10,
+        "defaultValue": "10"
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"error\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "method",
+    "name": "searchLabs",
+    "memberof": "src/api.js~Api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/api.js~Api#searchLabs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 67,
+    "undocument": true,
+    "params": [
+      {
+        "name": "page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 1,
+        "defaultValue": "1"
+      },
+      {
+        "name": "per_page",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 10,
+        "defaultValue": "10"
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"error\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "file",
     "name": "src/auth.js",
     "content": "import querystring from 'querystring'\nimport axios from 'axios'\n\n\nexport default class Auth {\n\n    constructor(config){\n        this.config = config\n    }\n\n\n    authorize_url(){\n        const config = this.config\n        const location =  \n            config.base_url + \n            config.authorize_url + '?' + \n            querystring.stringify({\n                'client_id' : config.client_id,\n                'redirect_uri': config.redirect_url,\n                'response_type': 'code'\n                })\n        return location\n    }\n\n    async revoke_token(token){\n        const config = this.config\n        const result = await axios.delete( \n            config.base_url + config.token_url, \n            querystring.stringify({\n            client_id: config.client_id,\n            client_secret: config.client_secret,\n            access_token: access_token,\n            redirect_uri: config.redirect_url\n          }),{\n            headers: {\n              'Content-Type': 'application/x-www-form-urlencoded'\n            }\n        })\n        return result\n    }\n\n\n    async request_token(code){\n        const config = this.config\n        const result = await axios.post( \n            config.base_url + config.token_url, \n            querystring.stringify({\n            client_id: config.client_id,\n            client_secret: config.client_secret,\n            code: code,\n            grant_type: 'authorization_code',\n            redirect_uri: config.redirect_url\n          }),{\n            headers: {\n              'Content-Type': 'application/x-www-form-urlencoded'\n            }\n        })\n        const token = result.data\n        return token\n    }\n\n}",
     "static": true,
@@ -575,7 +871,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 49,
+    "__docId__": 60,
     "kind": "class",
     "name": "Auth",
     "memberof": "src/auth.js",
@@ -591,7 +887,7 @@
     "interface": false
   },
   {
-    "__docId__": 50,
+    "__docId__": 61,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/auth.js~Auth",
@@ -605,7 +901,7 @@
     "undocument": true
   },
   {
-    "__docId__": 51,
+    "__docId__": 62,
     "kind": "member",
     "name": "config",
     "memberof": "src/auth.js~Auth",
@@ -622,7 +918,7 @@
     }
   },
   {
-    "__docId__": 52,
+    "__docId__": 63,
     "kind": "method",
     "name": "authorize_url",
     "memberof": "src/auth.js~Auth",
@@ -642,7 +938,7 @@
     }
   },
   {
-    "__docId__": 53,
+    "__docId__": 64,
     "kind": "method",
     "name": "revoke_token",
     "memberof": "src/auth.js~Auth",
@@ -669,7 +965,7 @@
     }
   },
   {
-    "__docId__": 54,
+    "__docId__": 65,
     "kind": "method",
     "name": "request_token",
     "memberof": "src/auth.js~Auth",
@@ -696,6 +992,186 @@
     }
   },
   {
+    "__docId__": 66,
+    "kind": "file",
+    "name": "src/index.js",
+    "content": "import Auth from \"./auth\"\nimport Api from \"./api\"\n\nconst _default_config = {\n  client_id: 'c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546' || process.env['FABLABS_IO_API_KEY'],\n  client_secret: 'b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d'|| process.env['FABLABS_IO_API_SECRET'],\n  personal_token: 'a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac' || process.env['FABLABS_IO_PERSONAL_TOKEN'],\n  redirect_url: 'http://localhost:3001/auth/callback' || process.env['FABLABS_IO_REDIRECT_URL'],\n  base_url: 'http://api.fablabs.local:3000' || process.env['FABLABS_IO_API_HOST'],\n  authorize_url: '/oauth/authorize',\n  token_url: '/oauth/token'\n}\n\nexport default class FablabsAPI {\n  \n  \n  constructor(config={}){\n    this.config = { ...config, ..._default_config }\n    this.auth = new Auth(this.config)\n    this.token = this.config.personal_token\n  }\n\n  authorization_url(){\n    return this.auth.authorize_url()\n  }\n\n  async handleAuthCode(code){\n     const token = this.auth.request_token(code)\n     if (token){\n       this.token = token\n     }\n     return this.token\n  }\n\n  api(){\n    return new Api(this.config, this.token)\n  }\n\n}\n",
+    "static": true,
+    "longname": "/Users/fiore/WIP/fablabsjs/src/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 67,
+    "kind": "variable",
+    "name": "_default_config",
+    "memberof": "src/index.js",
+    "static": true,
+    "longname": "src/index.js~_default_config",
+    "access": "private",
+    "export": false,
+    "importPath": "fablabsjs/src/index.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{\"client_id\": *, \"client_secret\": *, \"personal_token\": *, \"redirect_url\": *, \"base_url\": *, \"authorize_url\": string, \"token_url\": string}"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 68,
+    "kind": "class",
+    "name": "FablabsAPI",
+    "memberof": "src/index.js",
+    "static": true,
+    "longname": "src/index.js~FablabsAPI",
+    "access": "public",
+    "export": true,
+    "importPath": "fablabsjs/src/index.js",
+    "importStyle": "FablabsAPI",
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 69,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/index.js~FablabsAPI",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "member",
+    "name": "config",
+    "memberof": "src/index.js~FablabsAPI",
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#config",
+    "access": "public",
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{...config: Object, ..._default_config: Object}"
+      ]
+    }
+  },
+  {
+    "__docId__": 71,
+    "kind": "member",
+    "name": "auth",
+    "memberof": "src/index.js~FablabsAPI",
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#auth",
+    "access": "public",
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "member",
+    "name": "token",
+    "memberof": "src/index.js~FablabsAPI",
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#token",
+    "access": "public",
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 73,
+    "kind": "method",
+    "name": "authorization_url",
+    "memberof": "src/index.js~FablabsAPI",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#authorization_url",
+    "access": "public",
+    "description": null,
+    "lineNumber": 23,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "handleAuthCode",
+    "memberof": "src/index.js~FablabsAPI",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#handleAuthCode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "params": [
+      {
+        "name": "code",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "name": "api",
+    "memberof": "src/index.js~FablabsAPI",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/index.js~FablabsAPI#api",
+    "access": "public",
+    "description": null,
+    "lineNumber": 35,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
     "kind": "index",
     "content": "# fablabs.js\n\nAn ES6 Fablabs.io API client\n\n\n## Installation\n\n```\nyarn add fablabsjs\n```\n\n\n## Usage Examples\n\n\n### Using a personal token\n\nIf you want to write a personal app, or just want avoid using the OAuth flow for testing, you need\nto get a **personal token** from the Fablabs.io Developer console, along with application id and secret.\n\n> WARNING: Please make sure you understand that the token must be kept safe since all operations are done with your\naccount and other users can impersonate you if it leaks.\n\nSee [docs.fablabs.io](http://docs.fablabs.io) for further information\n\n```\nimport  FablabsAPI from 'fablabsjs'\n\nconst config = {\n\n    client_id: '<your application id>',\n    client_secret: '<your secret>',\n    personal_token: '<your personal token from the dashboard>'  // only for thev\n}\n\n\nlet fablabs = new FablabsAPI(config)\n\n\n// get the oauth redirect url\n\nconst redirect_url = fablabs.authorization_url()\n\n\n// process the authorization code and turn it into a token\n\nconst token = await fablabs.handle_token(code)\n\n\n// call any of the api methods\n\nconst userProfile = await fablabs.api().getUser()\n```\n\n### Using the oAuth flow\n\nThe library helps you in implementing the OAuth flow easily into your application. This is the preferred way to authenticate \nyour app, allowing each user to login on fablabs.io and authorize your app.\n\n```\nimport  FablabsAPI from 'fablabsjs'\n\nconst config = {\n\n    client_id: '<your application id>',\n    client_secret: '<your secret>',\n    redirect_url:'http://localhost:3001/auth/callback'\n}\n\nlet fablabs = new FablabsAPI(config)\n\n// get the oauth redirect url\n\nconst redirect_url = fablabs.authorization_url()\n\n// send the user to this url, and wait for the code to be sent to redirect_url\n\n// there, process the authorization code and turn it into a token\n\nconst token = await fablabs.handle_token(code)\n\n// call any of the api methods on behalf of the user\n\nconst userProfile = await fablabs.api().getUser()\n```\n\nSee the API reference for available functions.\n\n\n## Configuration variables\n\nThe following are all the variables you can set in the fablabsjs config:\n\n```\nconst _default_config = {\n    client_id: 'c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546' || process.env['FABLABS_IO_API_KEY'],\n    client_secret: 'b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d'|| process.env['FABLABS_IO_API_SECRET'],\n    redirect_url:'http://localhost:3001/auth/callback' || process.env['FABLABS_IO_REDIRECT_URL']\n    base_url:'http://api.fablabs.local:3000' || process.env['FABLABS_IO_API_HOST'],\n    authorize_url:'/oauth/authorize',\n    token_url:'/oauth/token',\n    personal_token: 'a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac' || process.env['FABLABS_IO_PERSONAL_TOKEN']\n}\n```\n\nPlease note that you can avoid to specify any config and just set environment variables instead.\n\n```\nFABLABS_IO_API_KEY = 'your client id'\nFABLABS_IO_API_SECRET = 'your secret'\nFABLABS_IO_REDIRECT_URL = 'http://localhost:3001/auth/callback'\nFABLABS_IO_API_HOST = 'http://api.fablabs.io'\nFABLABS_IO_PERSONAL_TOKEN = 'your personal token'\n```\n\n## Run tests\n\nYou can test the API and your config using the following command\n\n`yarn test`\n",
     "longname": "/Users/fiore/WIP/fablabsjs/README.md",
@@ -705,7 +1181,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"fablabsjs\",\n  \"version\": \"0.0.1\",\n  \"description\": \"Fablabs.io API Interface\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"compile\": \"./node_modules/.bin/babel -d lib/ src/\",\n    \"test\": \"npm run compile && ./node_modules/.bin/mocha --timeout 100000 --compilers js:babel-core/register\",\n    \"prepublish\": \"npm run compile\",\n    \"docs\": \"./node_modules/.bin/esdoc\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+git@github.com:fablabbcn/fablabsjs.git\"\n  },\n  \"keywords\": [\n    \"node\",\n    \"es6\",\n    \"module\",\n    \"fablabs\"\n  ],\n  \"author\": \"Fiore Basile\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/fablabbcn/fablabsjs/issues\"\n  },\n  \"homepage\": \"https://github.com/fablabbcn/fablabsjs\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.9.0\",\n    \"babel-core\": \"^6.9.0\",\n    \"babel-eslint\": \"^6.0.4\",\n    \"babel-preset-es2015\": \"^6.9.0\",\n    \"babel-preset-stage-3\": \"^6.5.0\",\n    \"eslint\": \"^2.10.2\",\n    \"eslint-config-airbnb\": \"^9.0.1\",\n    \"eslint-plugin-import\": \"^1.8.0\",\n    \"eslint-plugin-jsx-a11y\": \"^1.2.2\",\n    \"eslint-plugin-react\": \"^5.1.1\",\n    \"mocha\": \"^2.4.5\"\n  },\n  \"dependencies\": {\n    \"axios\": \"^0.18.0\",\n    \"babel-polyfill\": \"^6.9.1\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"querystring\": \"^0.2.0\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"fablabsjs\",\n  \"version\": \"0.0.1\",\n  \"description\": \"Fablabs.io API Interface\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"compile\": \"./node_modules/.bin/babel -d lib/ src/\",\n    \"test\": \"npm run compile && ./node_modules/.bin/mocha --timeout 100000 --compilers js:babel-core/register\",\n    \"prepublish\": \"npm run compile\",\n    \"docs\": \"./node_modules/.bin/esdoc\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+git@github.com:fablabbcn/fablabsjs.git\"\n  },\n  \"keywords\": [\n    \"node\",\n    \"es6\",\n    \"module\",\n    \"fablabs\"\n  ],\n  \"author\": \"Fiore Basile\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/fablabbcn/fablabsjs/issues\"\n  },\n  \"homepage\": \"https://github.com/fablabbcn/fablabsjs\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.9.0\",\n    \"babel-core\": \"^6.9.0\",\n    \"babel-eslint\": \"^6.0.4\",\n    \"babel-preset-es2015\": \"^6.9.0\",\n    \"babel-preset-stage-3\": \"^6.5.0\",\n    \"eslint\": \"^2.10.2\",\n    \"eslint-config-airbnb\": \"^9.0.1\",\n    \"eslint-plugin-import\": \"^1.8.0\",\n    \"eslint-plugin-jsx-a11y\": \"^1.2.2\",\n    \"eslint-plugin-react\": \"^5.1.1\",\n    \"mocha\": \"^2.4.5\"\n  },\n  \"dependencies\": {\n    \"axios\": \"^0.18.0\",\n    \"babel-polyfill\": \"^6.9.1\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"querystring\": \"^0.2.0\"\n  }\n}\n",
     "longname": "/Users/fiore/WIP/fablabsjs/package.json",
     "name": "package.json",
     "static": true,

@@ -1,8 +1,24 @@
 {
   "coverage": "0%",
-  "expectCount": 6,
+  "expectCount": 25,
   "actualCount": 0,
   "files": {
+    "src/api.js": {
+      "expectCount": 10,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        6,
+        7,
+        8,
+        11,
+        26,
+        37,
+        47,
+        57,
+        67
+      ]
+    },
     "src/auth.js": {
       "expectCount": 6,
       "actualCount": 0,
@@ -13,6 +29,21 @@
         12,
         25,
         43
+      ]
+    },
+    "src/index.js": {
+      "expectCount": 9,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        14,
+        17,
+        18,
+        19,
+        20,
+        23,
+        27,
+        35
       ]
     }
   }

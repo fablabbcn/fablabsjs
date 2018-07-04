@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/auth.js | fablabsjs</title>
+  <title data-ice="title">src/index.js | fablabsjs</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -36,69 +36,47 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/auth.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import querystring from &apos;querystring&apos;
-import axios from &apos;axios&apos;
+<div class="content" data-ice="content"><h1 data-ice="title">src/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Auth from &quot;./auth&quot;
+import Api from &quot;./api&quot;
 
+const _default_config = {
+  client_id: &apos;c7b63f68b0ec92dfc700061c373fcae80c9255e52fa30371ce224b79d7045546&apos; || process.env[&apos;FABLABS_IO_API_KEY&apos;],
+  client_secret: &apos;b29b0eaa742bed6e19fca87807af40bfbbd24cb15e9fdc3d6c1b7b558574850d&apos;|| process.env[&apos;FABLABS_IO_API_SECRET&apos;],
+  personal_token: &apos;a9eb5aa7a6f526a79feb3aa840aa7057d27112edb4570f1bf795c588ad89bcac&apos; || process.env[&apos;FABLABS_IO_PERSONAL_TOKEN&apos;],
+  redirect_url: &apos;http://localhost:3001/auth/callback&apos; || process.env[&apos;FABLABS_IO_REDIRECT_URL&apos;],
+  base_url: &apos;http://api.fablabs.local:3000&apos; || process.env[&apos;FABLABS_IO_API_HOST&apos;],
+  authorize_url: &apos;/oauth/authorize&apos;,
+  token_url: &apos;/oauth/token&apos;
+}
 
-export default class Auth {
+export default class FablabsAPI {
+  
+  
+  constructor(config={}){
+    this.config = { ...config, ..._default_config }
+    this.auth = new Auth(this.config)
+    this.token = this.config.personal_token
+  }
 
-    constructor(config){
-        this.config = config
-    }
+  authorization_url(){
+    return this.auth.authorize_url()
+  }
 
+  async handleAuthCode(code){
+     const token = this.auth.request_token(code)
+     if (token){
+       this.token = token
+     }
+     return this.token
+  }
 
-    authorize_url(){
-        const config = this.config
-        const location =  
-            config.base_url + 
-            config.authorize_url + &apos;?&apos; + 
-            querystring.stringify({
-                &apos;client_id&apos; : config.client_id,
-                &apos;redirect_uri&apos;: config.redirect_url,
-                &apos;response_type&apos;: &apos;code&apos;
-                })
-        return location
-    }
+  api(){
+    return new Api(this.config, this.token)
+  }
 
-    async revoke_token(token){
-        const config = this.config
-        const result = await axios.delete( 
-            config.base_url + config.token_url, 
-            querystring.stringify({
-            client_id: config.client_id,
-            client_secret: config.client_secret,
-            access_token: access_token,
-            redirect_uri: config.redirect_url
-          }),{
-            headers: {
-              &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
-            }
-        })
-        return result
-    }
-
-
-    async request_token(code){
-        const config = this.config
-        const result = await axios.post( 
-            config.base_url + config.token_url, 
-            querystring.stringify({
-            client_id: config.client_id,
-            client_secret: config.client_secret,
-            code: code,
-            grant_type: &apos;authorization_code&apos;,
-            redirect_uri: config.redirect_url
-          }),{
-            headers: {
-              &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
-            }
-        })
-        const token = result.data
-        return token
-    }
-
-}</code></pre>
+}
+</code></pre>
 
 </div>
 

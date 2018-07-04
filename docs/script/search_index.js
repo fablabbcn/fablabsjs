@@ -1,8 +1,20 @@
 window.esdocSearchIndex = [
   [
+    "fablabsjs/src/api.js~api",
+    "class/src/api.js~Api.html",
+    "<span>Api</span> <span class=\"search-result-import-path\">fablabsjs/src/api.js</span>",
+    "class"
+  ],
+  [
     "fablabsjs/src/auth.js~auth",
     "class/src/auth.js~Auth.html",
     "<span>Auth</span> <span class=\"search-result-import-path\">fablabsjs/src/auth.js</span>",
+    "class"
+  ],
+  [
+    "fablabsjs/src/index.js~fablabsapi",
+    "class/src/index.js~FablabsAPI.html",
+    "<span>FablabsAPI</span> <span class=\"search-result-import-path\">fablabsjs/src/index.js</span>",
     "class"
   ],
   [
@@ -288,6 +300,66 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/api.js",
+    "file/src/api.js.html",
+    "src/api.js",
+    "file"
+  ],
+  [
+    "src/api.js~api#config",
+    "class/src/api.js~Api.html#instance-member-config",
+    "src/api.js~Api#config",
+    "member"
+  ],
+  [
+    "src/api.js~api#constructor",
+    "class/src/api.js~Api.html#instance-constructor-constructor",
+    "src/api.js~Api#constructor",
+    "method"
+  ],
+  [
+    "src/api.js~api#get",
+    "class/src/api.js~Api.html#instance-method-get",
+    "src/api.js~Api#get",
+    "method"
+  ],
+  [
+    "src/api.js~api#getlab",
+    "class/src/api.js~Api.html#instance-method-getLab",
+    "src/api.js~Api#getLab",
+    "method"
+  ],
+  [
+    "src/api.js~api#getuser",
+    "class/src/api.js~Api.html#instance-method-getUser",
+    "src/api.js~Api#getUser",
+    "method"
+  ],
+  [
+    "src/api.js~api#labs",
+    "class/src/api.js~Api.html#instance-method-labs",
+    "src/api.js~Api#labs",
+    "method"
+  ],
+  [
+    "src/api.js~api#nearbylabs",
+    "class/src/api.js~Api.html#instance-method-nearbyLabs",
+    "src/api.js~Api#nearbyLabs",
+    "method"
+  ],
+  [
+    "src/api.js~api#searchlabs",
+    "class/src/api.js~Api.html#instance-method-searchLabs",
+    "src/api.js~Api#searchLabs",
+    "method"
+  ],
+  [
+    "src/api.js~api#token",
+    "class/src/api.js~Api.html#instance-member-token",
+    "src/api.js~Api#token",
+    "member"
+  ],
+  [
     "src/auth.js",
     "file/src/auth.js.html",
     "src/auth.js",
@@ -322,5 +394,53 @@ window.esdocSearchIndex = [
     "class/src/auth.js~Auth.html#instance-method-revoke_token",
     "src/auth.js~Auth#revoke_token",
     "method"
+  ],
+  [
+    "src/index.js",
+    "file/src/index.js.html",
+    "src/index.js",
+    "file"
+  ],
+  [
+    "src/index.js~fablabsapi#api",
+    "class/src/index.js~FablabsAPI.html#instance-method-api",
+    "src/index.js~FablabsAPI#api",
+    "method"
+  ],
+  [
+    "src/index.js~fablabsapi#auth",
+    "class/src/index.js~FablabsAPI.html#instance-member-auth",
+    "src/index.js~FablabsAPI#auth",
+    "member"
+  ],
+  [
+    "src/index.js~fablabsapi#authorization_url",
+    "class/src/index.js~FablabsAPI.html#instance-method-authorization_url",
+    "src/index.js~FablabsAPI#authorization_url",
+    "method"
+  ],
+  [
+    "src/index.js~fablabsapi#config",
+    "class/src/index.js~FablabsAPI.html#instance-member-config",
+    "src/index.js~FablabsAPI#config",
+    "member"
+  ],
+  [
+    "src/index.js~fablabsapi#constructor",
+    "class/src/index.js~FablabsAPI.html#instance-constructor-constructor",
+    "src/index.js~FablabsAPI#constructor",
+    "method"
+  ],
+  [
+    "src/index.js~fablabsapi#handleauthcode",
+    "class/src/index.js~FablabsAPI.html#instance-method-handleAuthCode",
+    "src/index.js~FablabsAPI#handleAuthCode",
+    "method"
+  ],
+  [
+    "src/index.js~fablabsapi#token",
+    "class/src/index.js~FablabsAPI.html#instance-member-token",
+    "src/index.js~FablabsAPI#token",
+    "member"
   ]
 ]
